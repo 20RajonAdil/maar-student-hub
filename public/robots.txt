@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /dashboard
+Disallow: /timetable
+Disallow: /notes
+Disallow: /homework
+Disallow: /focus
+Disallow: /settings
+Disallow: /onboarding
