@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -78,15 +78,14 @@ function AuthPage() {
   async function handleGoogle() {
     setLoading(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/dashboard` },
       });
-      if (result.error) throw result.error;
-      if (result.redirected) return;
-      navigate({ to: "/dashboard", replace: true });
+      if (error) throw error;
+      // Browser is redirecting to Google — nothing else to do.
     } catch (err) {
       toast.error((err as Error).message ?? "Sign-in failed");
-    } finally {
       setLoading(false);
     }
   }
